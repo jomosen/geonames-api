@@ -1,8 +1,7 @@
-from sqlalchemy.orm import declarative_base
+
 from sqlalchemy import Engine
 
-
-GeonamesBase = declarative_base()
+from geonames.infrastructure.persistence.database.base import GeonamesBase
 
 
 def init_schema(engine: Engine):
