@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String,Integer, BigInteger, CHAR, Float
+from sqlalchemy import Column, String,Integer, BigInteger, CHAR, Float, Text
 
 from geonames.infrastructure.persistence.database.base import GeonamesBase as Base
 
@@ -7,12 +7,12 @@ class CountryModel(Base):
 
     __tablename__ = "countries"
 
-    geoname_id = Column(Integer, primary_key=True)
+    geoname_id = Column(Integer, primary_key=True, autoincrement=False)
     iso_alpha2 = Column(CHAR(2), unique=True)
     iso_alpha3 = Column(CHAR(3))
     iso_numeric = Column(Integer)
     fips_code = Column(CHAR(2))
-    country_name = Column(String(100), nullable=False)
+    country_name = Column(String(100))
     capital = Column(String(100))
     area_sqkm = Column(Float)                       
     population = Column(BigInteger)
@@ -21,7 +21,7 @@ class CountryModel(Base):
     currency_code = Column(CHAR(3))
     currency_name = Column(String(50))
     phone = Column(String(20))
-    postal_code_format = Column(String(50))
+    postal_code_format = Column(Text)
     postal_code_regex = Column(String(200))
     languages = Column(String(200))
     neighbours = Column(String(100))
