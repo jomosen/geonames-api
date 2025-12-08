@@ -3,7 +3,7 @@ from typing import Optional, List, Dict
 from geonames.domain.entities.country import Country
 
 
-class CountryGeoNameRepository(ABC):
+class CountryRepository(ABC):
 
     @abstractmethod
     def find_by_id(self, geoname_id: int) -> Optional[Country]:
