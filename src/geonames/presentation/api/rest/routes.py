@@ -40,6 +40,7 @@ def get_admin_divisions_by_country(
     admin_division_query_service: AdminDivisionQueryService = Depends(get_admin_division_query_service),
     country_code: str = Path(..., min_length=2, max_length=2, regex="^(?i)[A-Z]{2}$"),
     feature_code: Optional[str] = Query(None, min_length=4, max_length=4, regex="^(?i)ADM[1-4]$"),
+    admin1_code: Optional[str] = Query(None, min_length=1, max_length=20),
     limit: int = Query(100, ge=1, le=1000),
     offset: int = Query(0, ge=0),
     expand: Optional[str] = Query(None),
@@ -48,6 +49,7 @@ def get_admin_divisions_by_country(
     filters = {
         "country_code": country_code.upper(), 
         "feature_code": feature_code, 
+        "admin1_code": admin1_code, 
         "limit": limit, 
         "offset": offset,
         "expand": expand.split(",") if expand else None,
