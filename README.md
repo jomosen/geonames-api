@@ -102,8 +102,10 @@ src/
 │   ├── domain/         # Entities and business logic
 │   ├── infrastructure/ # Implementations (DB, importers)
 │   └── presentation/   # REST API and CLI
-└── shared/             # Shared code between modules
+└── shared/             # Shared utilities (logger, file downloader, database connectors)
 ```
+
+**Note**: The `shared/` module contains reusable components like logging, file downloading, and database connection utilities. While currently serving only the `geonames` bounded context, this structure allows for easy addition of new bounded contexts in the future without code duplication.
 
 ### Architecture
 
