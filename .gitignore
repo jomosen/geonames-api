@@ -212,6 +212,4 @@ tmp/*
 # But keep the .gitkeep file in the tmp directory
 !tmp/.gitkeep
 
-.vscode/
-!.vscode/launch.json
 *.code-workspace

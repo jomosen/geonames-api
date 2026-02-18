@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run GeoNames Import",
+            "type": "python",
+            "request": "launch",
+            "module": "geonames.presentation.cli.main",
+            "args": [
+                "geonames",
+                "import"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        },
+        {
+            "name": "Run GeoNames API",
+            "type": "python",
+            "request": "launch",
+            "module": "geonames.presentation.cli.main",
+            "args": [
+                "api",
+                "start",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8080"
+            ],
+            "jinja": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "console": "integratedTerminal"
+        }
+    ]
+}
