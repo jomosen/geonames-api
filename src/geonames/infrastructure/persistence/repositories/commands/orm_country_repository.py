@@ -12,6 +12,27 @@ class OrmCountryRepository(CountryRepository):
     def __init__(self, session: Session):
         self.session = session
 
+    def find_by_id(self, geoname_id: int) -> Optional[Country]:
+        model = self.session.get(CountryModel, geoname_id)
+        if model:
+            return CountryPersistenceMapper.to_entity(model)
+        return None
+
+    def find_all(self, filters: Optional[Dict] = None) -> List[Country]:
+        query = self.session.query(CountryModel)
+        
+        if filters:
+            if 'iso' in filters:
+                query = query.filter(CountryModel.iso == filters['iso'])
+            if 'iso3' in filters:
+                query = query.filter(CountryModel.iso3 == filters['iso3'])
+        
+        models = query.all()
+        return [CountryPersistenceMapper.to_entity(model) for model in models]
+
+    def count_all(self) -> int:
+        return self.session.query(func.count(CountryModel.geoname_id)).scalar()
+
     def save(self, entity: Country) -> None:
         model = CountryPersistenceMapper.to_model(entity)
         existing = self.session.get(CountryModel, model.geoname_id)
