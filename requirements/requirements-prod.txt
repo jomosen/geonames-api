@@ -17,6 +17,7 @@ markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
 psycopg2==2.9.11
+redis>=5.0.0
 pydantic==2.12.5
 pydantic_core==2.41.5
 Pygments==2.19.2

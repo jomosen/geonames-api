@@ -34,7 +34,8 @@
                 "PYTHONPATH": "${workspaceFolder}"
             },
             "justMyCode": false,
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "preLaunchTask": "docker-compose: up"
         }
     ]
 }

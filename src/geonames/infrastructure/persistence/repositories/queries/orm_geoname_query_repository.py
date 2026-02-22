@@ -127,7 +127,7 @@ class OrmGeonameQueryRepository(QueryRepositoryPort):
 
         query = query.outerjoin(
             AdminDivisionModel,
-                (AdminDivisionModel.country_code == CountryModel.iso_alpha2)
+                (AdminDivisionModel.country_code == self.model_class.country_code)
                 & (AdminDivisionModel.admin1_code == self.model_class.admin1_code)
                 & (AdminDivisionModel.feature_code == "ADM1")
         )
