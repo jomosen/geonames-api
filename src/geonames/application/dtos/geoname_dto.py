@@ -32,3 +32,6 @@ class GeonameDTO(BaseModel):
     # Country expansion
     country_name: Optional[str] = Field(None, description="Full country name")
     postal_code_regex: Optional[str] = Field(None, description="Postal code regex pattern")
+
+    # Language expansion
+    localized_name: Optional[str] = Field(None, description="Name in the requested language (falls back to official name if no translation exists)")

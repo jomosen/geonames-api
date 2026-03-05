@@ -33,6 +33,7 @@ class GeonameOutputMapper:
             admin1_name=getattr(model, "admin1_name", None),
             country_name=getattr(model, "country_name", None),
             postal_code_regex=getattr(model, "postal_code_regex", None),
+            localized_name=getattr(model, "localized_name", None),
         )
 
     @staticmethod

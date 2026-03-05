@@ -1,7 +1,9 @@
 from typing import List, Optional, Dict, Set, Type, cast
+from sqlalchemy import func
 from sqlalchemy.orm import Session, Query
 from geonames.application.ports.query_repository_port import QueryRepositoryPort
 from geonames.infrastructure.persistence.models.admin_division_model import AdminDivisionModel
+from geonames.infrastructure.persistence.models.alternate_name_model import AlternateNameModel
 from geonames.infrastructure.persistence.models.geoname_model import GeonameModel
 from geonames.infrastructure.persistence.models.country_model import CountryModel
 from geonames.application.services.geoname_query_expansion_helper import GeonameQueryExpansionHelper
@@ -20,11 +22,10 @@ class OrmGeonameQueryRepository(QueryRepositoryPort):
         filters = filters or {}
 
         query = self.session.query(*self._get_basic_fields())
-                
+
         query = self._apply_expansions(filters, query)
-
+        query = self._apply_language_expansion(filters, query)
         query = self._apply_basic_filters(filters, query)
-
         query = self._apply_pagination(filters, query)
 
         models = cast(Query, query).all()
@@ -107,6 +108,27 @@ class OrmGeonameQueryRepository(QueryRepositoryPort):
 
         return query
 
+
+    def _apply_language_expansion(self, filters: Dict, query: Query) -> Query:
+        language = filters.get("language")
+        if not language:
+            return query
+
+        query = query.outerjoin(
+            AlternateNameModel,
+            (AlternateNameModel.geoname_id == self.model_class.geoname_id)
+            & (AlternateNameModel.iso_language == language)
+            & (AlternateNameModel.is_preferred_name == True),
+        )
+
+        query = query.add_columns(
+            func.coalesce(
+                AlternateNameModel.alternate_name,
+                self.model_class.name,
+            ).label("localized_name")
+        )
+
+        return query
 
     def _expand_country(self, query: Query, fields: Set[str]) -> Query:
 
