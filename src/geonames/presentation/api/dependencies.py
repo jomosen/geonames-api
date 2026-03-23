@@ -7,12 +7,15 @@ from fastapi import Depends
 from geonames.application.services.country_query_service import CountryQueryService
 from geonames.application.services.admin_division_query_service import AdminDivisionQueryService
 from geonames.application.services.city_query_service import CityQueryService
+from geonames.application.services.place_query_service import PlaceQueryService
 from geonames.infrastructure.persistence.repositories.queries.orm_city_query_repository import OrmCityQueryRepository
 from geonames.infrastructure.persistence.repositories.queries.orm_country_query_repository import OrmCountryQueryRepository
 from geonames.infrastructure.persistence.repositories.queries.orm_admin_division_query_repository import OrmAdminDivisionQueryRepository
+from geonames.infrastructure.persistence.repositories.queries.orm_place_query_repository import OrmPlaceQueryRepository
 from geonames.infrastructure.persistence.repositories.queries.cached_city_query_repository import CachedCityQueryRepository
 from geonames.infrastructure.persistence.repositories.queries.cached_admin_division_query_repository import CachedAdminDivisionQueryRepository
 from geonames.infrastructure.persistence.repositories.queries.cached_country_query_repository import CachedCountryQueryRepository
+from geonames.infrastructure.persistence.repositories.queries.cached_place_query_repository import CachedPlaceQueryRepository
 from geonames.application.ports.cache_port import CacheContext
 from geonames.infrastructure.cache.redis_cache import RedisCache
 from shared.infrastructure.persistence.database.database_connection_factory import DatabaseConnectionFactory
@@ -82,6 +85,20 @@ def get_city_query_service(
     return CityQueryService(
         city_query_repo=CachedCityQueryRepository(
             orm_repo=OrmCityQueryRepository(session),
+            cache=cache,
+            ttl=redis_ttl,
+            context=context,
+        )
+    )
+
+def get_place_query_service(
+    session: Session = Depends(get_db_session),
+    cache: RedisCache = Depends(get_redis_cache),
+    context: CacheContext = Depends(get_cache_context),
+) -> PlaceQueryService:
+    return PlaceQueryService(
+        place_query_repo=CachedPlaceQueryRepository(
+            orm_repo=OrmPlaceQueryRepository(session),
             cache=cache,
             ttl=redis_ttl,
             context=context,

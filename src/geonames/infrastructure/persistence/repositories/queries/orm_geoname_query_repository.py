@@ -50,6 +50,9 @@ class OrmGeonameQueryRepository(QueryRepositoryPort):
     
     def _apply_basic_filters(self, filters: Dict, query: Query) -> Query:
 
+        if filters.get("name"):
+            query = query.filter(self.model_class.name.ilike(f"%{filters['name']}%"))
+
         if filters.get("country_code"):
             query = query.filter(self.model_class.country_code == filters["country_code"])
 
@@ -74,7 +77,9 @@ class OrmGeonameQueryRepository(QueryRepositoryPort):
         if filters.get("feature_class"):
             query = query.filter(self.model_class.feature_class == filters["feature_class"])
 
-        if filters.get("feature_code"):
+        if filters.get("feature_codes"):
+            query = query.filter(self.model_class.feature_code.in_(filters["feature_codes"]))
+        elif filters.get("feature_code"):
             query = query.filter(self.model_class.feature_code == filters["feature_code"])
 
         return query
